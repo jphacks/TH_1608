@@ -25,9 +25,6 @@ def parse_mecab_one_sent(seq):
 
 
 def main():
-    script_path = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), '..')
-
     raw_sent = str(sys.stdin.read()).strip()
 
     url_regex = re.compile(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-]+')
