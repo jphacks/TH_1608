@@ -27,17 +27,24 @@ def parse_mecab_one_sent(seq):
 def main():
     raw_sent = str(sys.stdin.read()).strip()
 
+    raw_sent = re.sub(r'\'', '', raw_sent)
+
     url_regex = re.compile(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-]+')
     screen_name_regex = re.compile(r'@([a-zA-Z0-9_])+')
-    normalized_sent = screen_name_regex.sub('', url_regex.sub('', raw_sent))
+    normalized_sent = screen_name_regex.sub('', url_regex.sub('', raw_sent)).strip()
 
-    cmd = 'echo {} | mecab -d /home/ryo-t/tmp/mecab-ipadic-neologd'.format(normalized_sent)
+    if not normalized_sent:
+        print()
+        return
+
+    cmd = 'echo \'{}\' | mecab -d /home/ryo-t/tmp/mecab-ipadic-neologd'.format(normalized_sent)
     parse_result = subprocess.check_output(cmd, shell=True).decode('utf-8')
 
     print(' '.join([token['base'] for token in parse_mecab_one_sent(parse_result.split('\n')) if
                     token['pos'] in ('名詞', '動詞', '形容詞') and
                     token['pos1'] != '非自立' and
-                    token['base'] not in stoplist]))
+                    token['base'] not in stoplist and
+                    token['base'] != '*']))
 
 
 if __name__ == '__main__':
