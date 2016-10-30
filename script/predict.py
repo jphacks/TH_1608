@@ -43,7 +43,8 @@ def main(fi):
     args = parser.parse_args()
 
     with open('data/vocab_dict.txt', "r") as f_dict:
-        vocab_dict = {unicode(l.split('\t')[0]): int(l.split('\t')[1]) for l in f_dict}
+        vocab = set(unicode(l.split('\t')[0]) for l in f_dict)
+        vocab_dict = {w: i for i, w in enumerate(vocab)}
 
     n_units = args.unit
 
