@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-# classias使いますよ
+# とりあえずclassias-tagするのでサーバで
+# 入力は複数ツイートを標準入力で
+
 import commands
 import re
 import sys
 
-
-# とりあえずclassias-tagするのでサーバで
-# 入力は複数ツイートを標準入力で
 
 def n_gram(s, n):
     x = ['_'.join(s[i:i + n]) for i in range((len(s) - n + 1))]
@@ -16,9 +15,10 @@ def n_gram(s, n):
 
 
 def sentences2probs(sentences, model):
-    pat = re.compile(r'[-+]1:(0.\d+)')
     probs = []
+    i = 0
     for sent in sentences:
+        i += 1
         words = sent.rstrip().split()
         features = []
         for word in words:
@@ -31,14 +31,16 @@ def sentences2probs(sentences, model):
             features.append(x)
         line = ' '.join(features)
         check = commands.getoutput(
-            "echo +1 {} | classias-tag -m {} -p".format(line, model))
-        probs.append(float(pat.match(check).group(1)))
+            "echo '+1 {}' | classias-tag -m {} -p".format(line, model))
+        probs.append(float(check.split(':')[1]))
+        # なんか遅いので30ツイートくらいでやめます
+        if i > 30:
+            break
     return probs
 
 
 # 確率を逐次表示します
 def sent2prob(sentences, model):
-    pat = re.compile(r'[-+]1:(0.\d+)')
     for sent in sentences:
         words = sent.rstrip().split()
         features = []
@@ -52,8 +54,8 @@ def sent2prob(sentences, model):
             features.append(x)
         line = ' '.join(features)
         check = commands.getoutput(
-            "echo +1 {} | classias-tag -m {} -p".format(line, model))
-        print(float(pat.match(check).group(1)))
+            "echo '-1 {}' | classias-tag -m {} -p".format(line, model))
+        print(float(check.split(':')[1]))
 
 if __name__ == '__main__':
     model = '/home/asano/twitter_model3'
