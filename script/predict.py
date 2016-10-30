@@ -43,7 +43,8 @@ def main(fi):
     args = parser.parse_args()
 
     with open('data/vocab_dict.txt', "r") as f_dict:
-        vocab_dict = {unicode(l.split('\t')[0]): int(l.split('\t')[1]) for l in f_dict}
+        vocab = set(unicode(l.split('\t')[0]) for l in f_dict)
+        vocab_dict = {w: i for i, w in enumerate(vocab)}
 
     n_units = args.unit
 
@@ -60,6 +61,9 @@ def main(fi):
     xp = cuda.cupy if args.gpu >= 0 else np
     for line in fi:
         line = unicode(line.rstrip('\n'))
+        if not line:
+            print ''
+            continue
         words = [vocab_dict.get(w, unk) for w in filter(lambda x: len(x) > 0, line.split(' '))]
         xp_words = [xp.array([w], xp.int32) for w in words]
         pred = F.softmax(model.predictor(xp_words)).data[0][1]

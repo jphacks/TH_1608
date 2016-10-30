@@ -22,7 +22,7 @@ class BLSTM(chainer.Chain):
     def __init__(self, n_vocab, n_units, n_labels, train=True):
         super(BLSTM, self).__init__(
             embed=F.EmbedID(n_vocab, n_units, ignore_label=-1),
-            fl=L.LSTM(n_units, n_units),
+            # fl=L.LSTM(n_units, n_units),
             # bl=L.LSTM(n_units, n_units),
             ll=L.Linear(n_units, 2)
         )
@@ -31,19 +31,21 @@ class BLSTM(chainer.Chain):
         self.train = train
 
     def reset_state(self):
-        self.fl.reset_state()
+        pass
+        # self.fl.reset_state()
         # self.bl.reset_state()
 
     def __call__(self, x_list):
         e_list = [self.embed(chainer.Variable(x)) for x in x_list]
-        hf_list = [self.fl(e) for e in e_list]
+        # hf_list = [self.fl(e) for e in e_list]
         # hb_list = [self.bl(e) for e in e_list[::-1]][::-1]
         # y1 = [F.concat((_hf, _hb)) for _hf, _hb in zip(hf, hb)]
-        y1 = hf_list[0]
-        for yi in hf_list[1:]:
-            y1 = F.maximum(yi, y1)
-        y2 = self.ll(F.relu(y1))
-        return y2
+        # y1 = hf_list[0]
+        # for yi in hf_list[1:]:
+        #     y1 = F.maximum(yi, y1)
+        # y2 = self.ll(F.relu(y1))
+        y = self.ll(F.relu(sum(e_list)))
+        return y
 
 
 class MyIterator(chainer.dataset.Iterator):
@@ -180,7 +182,7 @@ def main(fi):
                         help='Resume the training from snapshot')
     parser.add_argument('--test', action='store_true',
                         help='Use tiny datasets for quick tests')
-    parser.add_argument('--w2v', default='data/twitter_model.bin',
+    parser.add_argument('--w2v', default='../twitter_model.bin',
                         help='')
     parser.set_defaults(test=False)
     parser.add_argument('--unit', '-u', type=int, default=300,
