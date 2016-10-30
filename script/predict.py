@@ -63,6 +63,7 @@ def main(fi):
         line = unicode(line.rstrip('\n'))
         if not line:
             print ''
+            continue
         words = [vocab_dict.get(w, unk) for w in filter(lambda x: len(x) > 0, line.split(' '))]
         xp_words = [xp.array([w], xp.int32) for w in words]
         pred = F.softmax(model.predictor(xp_words)).data[0][1]
