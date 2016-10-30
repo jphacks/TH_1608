@@ -1,0 +1,25 @@
+{
+  "name": "wakarepo",
+  "version": "1.0.0",
+  "description": "### 背景（製品開発のきっかけ、課題等） 現在日本が抱えている大きな問題の一つとして、少子化がある。総務省が公表した2015年国勢調査の確定値によると、[75歳以上の人口が14歳以下の人口を初めて上回ったという](http://www.nikkei.com/article/DGXLASFS26H5A_W6A021C1MM8000/)。この原因の一つとして考えられるのが #### 日本人の非リア充率の高さ である。国立社会保障・人口問題研究所が2015年に実施した「第15回出生動向基本調査（結婚と出産に関する全国調査）」の[公表結果](http://www.ipss.go.jp/ps-doukou/j/doukou15/doukou15_gaiyo.asp)によると、異性の交際相手をもたない未婚者（非リア充）は男性69.8％、女性59.1％であったそうだ。 #### これは大問題である 一方で、いずれは結婚しようと考える未婚者の割合は、男性85.7％、女性89.3％と高い割合を示している。つまり、 #### リア充になりたい日本人は世の中に溢れている！ ここから我々は、 #### 恋人がほしいと思っている人の背中を押すアプリを開発し、少子化対策に貢献しようと考えた。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jphacks/TH_1608.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jphacks/TH_1608/issues"
+  },
+  "homepage": "https://github.com/jphacks/TH_1608#readme",
+  "dependencies": {
+    "botkit": "^0.4.0",
+    "cron": "^1.1.1",
+    "http": "0.0.0",
+    "request": "^2.76.0"
+  }
+}
