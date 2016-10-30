@@ -21,9 +21,8 @@ def main(probs, width, threshold, n_tweets):
         if sma_lis[i + 1] - sma_lis[i] > threshold:
             broken_up = True
 
-    if broken_up:
-        print('!')
-    print(stats.hmean(probs[:n_tweets]))
+    return (broken_up, stats.hmean(probs[:n_tweets]))
+
 
 if __name__ == '__main__':
     model = '/home/asano/twitter_model3'
